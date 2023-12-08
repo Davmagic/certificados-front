@@ -11,15 +11,12 @@ import {
   Canvas
 } from 'pdfmake-wrapper'
 import * as pdfFonts from 'pdfmake/build/vfs_fonts'
-import header from '../../../public/centro-header.png'
-import logo from '../../../public/centro-logo.png'
-import footer from '../../../public/centro-footer.png'
 
 PdfMakeWrapper.setFonts(pdfFonts)
 
-const imageTop = 'https://global.discourse-cdn.com/business4/uploads/monday/original/2X/7/7d4eda7adb575053ab6832b6727f76aba661bc0d.jpeg'
-const imageLogo = 'https://aka-cdn.uce.edu.ec/ares/tmp/SIIU/anuncios/sello_400.png'
-const imageFooter = 'https://global.discourse-cdn.com/business4/uploads/monday/original/2X/7/7d4eda7adb575053ab6832b6727f76aba661bc0d.jpeg'
+const imageTop = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-header.png'
+const imageLogo = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-logo.png'
+const imageFooter = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-footer.png'
 const providerEntity = 'CÁMARA ARTESANAL POPULAR DE CAPACITACIÓN ARTEC S.A.S. B.L.C.'
 const QR_BASE = 'https://127.0.0.1:3000/enrolls'
 
