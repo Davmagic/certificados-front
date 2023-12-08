@@ -138,8 +138,9 @@ export default function MiniDrawer ({ children }) {
           >
             <MenuIcon />
           </IconButton>
+          <img src='/centro-logo.png' alt='logo' width='40' height='40' className='me-1' />
           <Typography variant='h6' noWrap component='h1'>
-            Centro de certificados
+            ARTEC
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {session?.user

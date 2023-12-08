@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import LoadingData from '@/components/LoadingData'
 import ExportEnrollButton from '@/components/ExportEnrollButton'
 import { formatDate } from '@/libs/utils/formatDate'
+import QrCodeButton from '@/components/QrCodeButton'
 
 const columns = [
   { id: 'course', label: 'Nombre' },
@@ -44,6 +45,7 @@ const TableEnrolls = ({ id, type = 'students' }) => {
               <TableCell>{formatDate(enroll.finishedAt)}</TableCell>
               <TableCell>{formatDate(enroll.emittedAt)}</TableCell>
               <TableCell>
+                <QrCodeButton enroll={enroll} />
                 <ExportEnrollButton id={enroll.id} />
                 <Tooltip title='Editar'>
                   <IconButton aria-label='editar' size='small' color='warning'>

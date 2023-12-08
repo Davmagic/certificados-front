@@ -1,5 +1,6 @@
 /* eslint-disable no-unreachable */
 import moment from 'moment'
+import 'moment/locale/es'
 import {
   PdfMakeWrapper,
   Columns,
@@ -18,7 +19,7 @@ const imageTop = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/ce
 const imageLogo = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-logo.png'
 const imageFooter = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-footer.png'
 const providerEntity = 'CÁMARA ARTESANAL POPULAR DE CAPACITACIÓN ARTEC S.A.S. B.L.C.'
-const QR_BASE = 'https://certificados-front.vercel.app/enrolls'
+export const QR_BASE = 'https://certificados-front.vercel.app/enrolls'
 
 const largeSize = 15
 const mediumSize = 12
@@ -34,7 +35,7 @@ export default async function createPDF ({ student, course, ...enroll }) {
 
   pdf.add(
     new Stack([
-      await new Img(imageLogo).width(100).alignment('center').margin([0, 10]).build(),
+      await new Img(imageLogo).width(200).alignment('center').margin([0, 10]).build(),
       new Txt(providerEntity).alignment('center').fontSize(largeSize).margin(20).bold().end,
       new Txt('NÚMERO DE INSCRIPCIÓN EN EL REGISTRO SOCIETARIO: 110437').alignment('center').italics().fontSize(mediumSize).margin([0, 0, 0, 20]).end,
       new Txt('OTORGA A:').alignment('center').fontSize(largeSize).margin([0, 0, 0, 15]).bold().end,
@@ -49,14 +50,20 @@ export default async function createPDF ({ student, course, ...enroll }) {
       new Txt(`Fecha de emisión del certificado: ${moment(enroll.emittedAt).format('MMMM DD, YYYY')}.`).alignment('center').italics().fontSize(smallSize).margin([0, 20, 0, 15]).end,
       new Columns([
         new Stack([
-          await new Img(imageLogo).width(100).alignment('center').margin([0, 10]).build(),
-          new Txt('Firma autorizada').alignment('center').fontSize(smallSize).end
-        ]).end,
-        new QR(`${QR_BASE}?dni=${student.user.dni}`).fit(75).eccLevel('L').end,
+          new Canvas([
+            new Line([0, 0], [150, 0]).lineWidth(1).color('black').end
+          ]).end,
+          new Txt('Arts. Evelin Rosero Proaño').bold().alignment('center').fontSize(smallSize).end,
+          new Txt('PRESIDENTE EJECUTIVO ARTEC').alignment('center').fontSize(smallSize - 2).end
+        ]).relativePosition(0, 30).end,
+        new QR(`${QR_BASE}/${enroll.id}`).fit(75).relativePosition(0, 50).eccLevel('L').end,
         new Stack([
-          await new Img(imageLogo).width(100).alignment('center').margin([0, 10]).build(),
-          new Txt('Second authorized sign').alignment('center').fontSize(smallSize).end
-        ]).end
+          new Canvas([
+            new Line([0, 0], [150, 0]).lineWidth(1).color('black').end
+          ]).end,
+          new Txt('Arts. Mistón Valdéz Encalada').bold().alignment('center').fontSize(smallSize).end,
+          new Txt('VICEPRESIDENTE EJECUTIVO ARTEC').alignment('center').fontSize(smallSize - 2).end
+        ]).relativePosition(0, 30).end
       ]).alignment('center').margin(20).end
     ]).width('100%').alignment('center').end
   )
