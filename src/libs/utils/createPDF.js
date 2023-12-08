@@ -18,7 +18,7 @@ const imageTop = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/ce
 const imageLogo = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-logo.png'
 const imageFooter = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-footer.png'
 const providerEntity = 'CÁMARA ARTESANAL POPULAR DE CAPACITACIÓN ARTEC S.A.S. B.L.C.'
-const QR_BASE = 'https://127.0.0.1:3000/enrolls'
+const QR_BASE = `${process.env.NEXT_PUBLIC_API_URL}/enrolls`
 
 const largeSize = 15
 const mediumSize = 12
