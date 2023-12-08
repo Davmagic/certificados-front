@@ -28,8 +28,8 @@ export default async function createPDF ({ student, course, ...enroll }) {
   const pdf = new PdfMakeWrapper()
   pdf.pageSize('A4')
 
-  pdf.header(
-    await new Img(imageTop).width(650).alignment('center').relativePosition(0, -30).build()
+  pdf.add(
+    await new Img(imageTop).width(650).alignment('center').absolutePosition(0, -30).build()
   )
 
   pdf.add(
@@ -61,9 +61,9 @@ export default async function createPDF ({ student, course, ...enroll }) {
     ]).width('100%').alignment('center').end
   )
 
-  pdf.footer(
-    await new Img(imageFooter).width(650).alignment('center').relativePosition(0, -30).build()
+  pdf.add(
+    await new Img(imageFooter).width(650).alignment('center').absolutePosition(0, 400).build()
   )
 
-  pdf.create().download(`certificado_${student.user.dni}_${course.name}.pdf`)
+  pdf.create().open()
 }
