@@ -65,5 +65,5 @@ export default async function createPDF ({ student, course, ...enroll }) {
     await new Img(imageFooter).width(650).alignment('center').relativePosition(0, -30).build()
   )
 
-  pdf.create().open()
+  pdf.create().download(`certificado_${student.user.dni}_${course.name}.pdf`)
 }
