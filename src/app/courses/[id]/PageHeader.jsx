@@ -15,7 +15,7 @@ const PageHeader = ({ id }) => {
     <Card sx={{ mb: 2 }}>
       <CardHeader
         title='Detalles del curso'
-        action={<NewEnroll id={id} />}
+        action={<NewEnroll id={id} bachelor={course.bachelor} />}
       />
       <CardContent>
         <Typography gutterBottom>
@@ -23,12 +23,20 @@ const PageHeader = ({ id }) => {
           {course.name}
         </Typography>
         <Typography gutterBottom>
-          <strong>Descripción: </strong>
-          {course.description}
+          <strong>Modalidad: </strong>
+          {course.mode}
         </Typography>
         <Typography gutterBottom>
-          <strong># de Horas del curso: </strong>
+          <strong>Academia: </strong>
+          {course.academy?.name}
+        </Typography>
+        <Typography gutterBottom>
+          <strong># de Horas: </strong>
           {course.hours}
+        </Typography>
+        <Typography gutterBottom>
+          <strong>Título al finalizar: </strong>
+          {course.bachelor}
         </Typography>
         <Typography gutterBottom>
           <strong>Total de estudiantes: </strong>

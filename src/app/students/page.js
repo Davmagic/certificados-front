@@ -45,7 +45,7 @@ const StudentsPage = () => {
 
   const handleConfirm = async () => {
     try {
-      await axios.delete(`/users/${selectedStudent.userId}`)
+      await axios.delete(`/students/${selectedStudent.id}`)
       handleCloseConfirm()
       mutate('/students')
     } catch (error) {
@@ -109,37 +109,33 @@ const StudentsPage = () => {
             <Table sx={{ minWidth: 650 }} aria-label='simple table'>
               <TableHead>
                 <TableRow>
+                  <TableCell sx={{ width: 20 }}>#</TableCell>
                   <TableCell>C.I.</TableCell>
                   <TableCell>Nombre</TableCell>
                   <TableCell>Apellido</TableCell>
-                  <TableCell>Correo</TableCell>
-                  <TableCell>Número de matrículas</TableCell>
-                  {/* <TableCell>Estado</TableCell> */}
+                  <TableCell>Código de socio</TableCell>
+                  <TableCell>Número de certificados</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {students?.map((student) => (
+                {students?.map((student, ind) => (
                   <TableRow
                     key={student.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell component='th' scope='row'>
-                      {student.user.dni}
-                    </TableCell>
-                    <TableCell>{student.user.name}</TableCell>
-                    <TableCell>{student.user.lastname}</TableCell>
-                    <TableCell>{student.user.email}</TableCell>
-                    <TableCell>{student._count.enrolls}</TableCell>
-                    {/* <TableCell>
-                      <Chip
-                        label={student.user.isActive ? 'activo' : 'inactivo'}
-                        color={student.user.isActive ? 'succes' : 'error'}
-                        variant='outlined'
-                      />
-                    </TableCell> */}
                     <TableCell>
-                      <Tooltip title='Matricular'>
+                      {ind + 1}
+                    </TableCell>
+                    <TableCell>
+                      {student.dni}
+                    </TableCell>
+                    <TableCell>{student.name}</TableCell>
+                    <TableCell>{student.lastname}</TableCell>
+                    <TableCell>{student.partner}</TableCell>
+                    <TableCell>{student._count.enrolls}</TableCell>
+                    <TableCell>
+                      <Tooltip title='Certificados'>
                         <Link href={`/students/${student.id}`} passHref>
                           <IconButton color='success'>
                             <BookmarkAddIcon fontSize='inherit' />

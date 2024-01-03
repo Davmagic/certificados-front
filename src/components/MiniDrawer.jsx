@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import { useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles'
@@ -27,6 +28,7 @@ import LoginIcon from '@mui/icons-material/Login'
 import Link from 'next/link'
 import { enqueueSnackbar } from 'notistack'
 import { signIn, signOut, useSession } from 'next-auth/react'
+import { Tooltip } from '@mui/material'
 
 const drawerWidth = 220
 
@@ -145,7 +147,7 @@ export default function MiniDrawer ({ children }) {
           <Box sx={{ flexGrow: 1 }} />
           {session?.user
             ? (
-              <Typography variant='subtitle1' noWrap component='div' sx={{ opacity: { sm: 0 } }}>
+              <Typography noWrap>
                 {session.user.name}
               </Typography>
               )
@@ -235,25 +237,27 @@ export default function MiniDrawer ({ children }) {
             </ListItem>
           ))}
           <ListItem disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5
-              }}
-              onClick={() => session?.user ? signOut() : signIn()}
-            >
-              <ListItemIcon
+            <Tooltip title={session?.user ? 'cerrar sesión' : 'iniciar sesión'}>
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center'
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5
                 }}
+                onClick={() => session?.user ? signOut() : signIn()}
               >
-                {session?.user ? <LogoutIcon /> : <LoginIcon />}
-              </ListItemIcon>
-              <ListItemText primary={session?.user ? 'Cerrar Sesión' : 'Iniciar Sesión'} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center'
+                  }}
+                >
+                  {session?.user ? <LogoutIcon /> : <LoginIcon />}
+                </ListItemIcon>
+                <ListItemText primary={session?.user ? 'Cerrar Sesión' : 'Iniciar Sesión'} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </Tooltip>
           </ListItem>
         </List>
       </Drawer>

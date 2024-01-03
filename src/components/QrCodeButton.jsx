@@ -24,7 +24,7 @@ const QrCodeButton = ({ enroll }) => {
           <QRCode value={`${QR_BASE}/${enroll.id}`} level='L' />
         </Box>
         <Typography gutterBottom>
-          <strong>Curso:</strong> {enroll.course.name}
+          <strong>Curso:</strong> {enroll.course?.name}
         </Typography>
       </CustomDialog>
     </>

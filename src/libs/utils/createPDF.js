@@ -18,8 +18,9 @@ PdfMakeWrapper.setFonts(pdfFonts)
 const imageTop = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-header.png'
 const imageLogo = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-logo.png'
 const imageFooter = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-footer.png'
-const providerEntity = 'CÁMARA ARTESANAL POPULAR DE CAPACITACIÓN ARTEC S.A.S. B.L.C.'
-export const QR_BASE = 'https://certificados-front.vercel.app/enrolls'
+const providerEntity = 'CÁMARA ARTESANAL POPULAR DE CAPACITACIÓN'
+const providerEntityShort = 'ARTEC S.A.S. B.L.C.'
+export const QR_BASE = 'http://localhost:3000/enrolls' // 'https://certificados-front.vercel.app/enrolls'
 
 const largeSize = 15
 const mediumSize = 12
@@ -36,14 +37,15 @@ export default async function createPDF ({ student, course, ...enroll }) {
   pdf.add(
     new Stack([
       await new Img(imageLogo).width(200).alignment('center').margin([0, 10]).build(),
-      new Txt(providerEntity).alignment('center').fontSize(largeSize).margin(20).bold().end,
+      new Txt(providerEntity).alignment('center').fontSize(largeSize).margin([20, 20, 20, 5]).bold().end,
+      new Txt(providerEntityShort).alignment('center').fontSize(largeSize).margin([0, 0, 0, 20]).bold().end,
       new Txt('NÚMERO DE INSCRIPCIÓN EN EL REGISTRO SOCIETARIO: 110437').alignment('center').italics().fontSize(mediumSize).margin([0, 0, 0, 20]).end,
       new Txt('OTORGA A:').alignment('center').fontSize(largeSize).margin([0, 0, 0, 15]).bold().end,
-      new Txt(`${student.user.name} ${student.user.lastname} - ${student.user.dni}`).alignment('center').fontSize(largeSize).margin([0, 0, 0, 15]).bold().end,
+      new Txt(`${student.name} ${student.lastname} - ${student.dni}`).alignment('center').fontSize(largeSize).margin([0, 0, 0, 15]).bold().end,
       new Canvas([
         new Line([0, 0], [350, 0]).lineWidth(10).color('black').end
       ]).alignment('center').end,
-      new Txt(`CERTIFICADO DE ${enroll.title || 'MAESTRO DE TALLER'}`).alignment('center').fontSize(largeSize).margin([0, 20, 0, 15]).end,
+      new Txt(`CERTIFICADO DE ${enroll.bachelor || 'MAESTRO DE TALLER'}`).alignment('center').fontSize(largeSize).margin([0, 20, 0, 15]).end,
       new Txt(`CURSO: ${course.name}`).alignment('center').fontSize(mediumSize).margin([0, 0, 0, 15]).bold().end,
       new Txt(`CON UNA DURACIÓN DE ${course.hours} HORAS TEÓRICAS Y PRÁCTICAS`).alignment('center').fontSize(smallSize).end,
       new Txt('MODALIDAD PRESENCIAL').alignment('center').fontSize(smallSize).end,

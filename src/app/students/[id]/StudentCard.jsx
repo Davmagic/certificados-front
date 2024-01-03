@@ -19,10 +19,11 @@ const StudentCard = ({ id }) => {
               action={<NewEnroll id={id} />}
             />
             <CardContent>
-              <Typography gutterBottom>C.I.: <strong>{student?.user.dni}</strong></Typography>
-              <Typography gutterBottom>Nombre: <strong>{student?.user.name}</strong></Typography>
-              <Typography gutterBottom>Apellidos: <strong>{student?.user.lastname}</strong></Typography>
-              <Typography gutterBottom># de matriculas: <strong>{student?._count.enrolls}</strong></Typography>
+              <Typography gutterBottom>C.I.: <strong>{student?.dni}</strong></Typography>
+              <Typography gutterBottom>Nombre: <strong>{student?.name}</strong></Typography>
+              <Typography gutterBottom>Apellidos: <strong>{student?.lastname}</strong></Typography>
+              <Typography gutterBottom>Código de socio: <strong>{student?.partner}</strong></Typography>
+              <Typography gutterBottom># de Certificados: <strong>{student?._count.enrolls}</strong></Typography>
             </CardContent>
           </>
           )}

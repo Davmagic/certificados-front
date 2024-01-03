@@ -112,18 +112,18 @@ export default function EnrollsPage () {
                       <TableCell>Nombre</TableCell>
                       <TableCell>Cédula</TableCell>
                       <TableCell>Curso</TableCell>
-                      <TableCell>Fecha de Finalización</TableCell>
-                      <TableCell>Fecha de Emisión del Certificado</TableCell>
+                      <TableCell>Modalidad</TableCell>
+                      <TableCell>Emisión del Certificado</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {results.map(({ student, course, ...result }) => (
                       <TableRow key={result.id}>
-                        <TableCell>{student.user.lastname}</TableCell>
-                        <TableCell>{student.user.name}</TableCell>
-                        <TableCell>{student.user.dni}</TableCell>
+                        <TableCell>{student.lastname}</TableCell>
+                        <TableCell>{student.name}</TableCell>
+                        <TableCell>{student.dni}</TableCell>
                         <TableCell>{course.name}</TableCell>
-                        <TableCell>{formatDate(result.finishedAt)}</TableCell>
+                        <TableCell>{course.mode}</TableCell>
                         <TableCell>{formatDate(result.emittedAt)}</TableCell>
                       </TableRow>
                     ))}

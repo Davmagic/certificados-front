@@ -22,7 +22,7 @@ export default function HomePage () {
         <Grid xs={6}>
           <MediaCard
             heading='Estudiantes'
-            text='Administra los estudiantes que están matriculados o agrega más.'
+            text='Administra los estudiantes que están registrados o agrega más.'
             href='/students'
           />
         </Grid>

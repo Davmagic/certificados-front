@@ -3,13 +3,13 @@ import { useState } from 'react'
 import { Formik } from 'formik'
 import useSWR, { useSWRConfig } from 'swr'
 import * as Yup from 'yup'
-import { Button, Grid, MenuItem, TextField } from '@mui/material'
+import { Autocomplete, Button, Grid, TextField } from '@mui/material'
 import CustomDialog from '@/components/CustomDialog'
 import axiosInstance from '@/helpers/axiosInstance'
 import { enqueueSnackbar } from 'notistack'
 import AddIcon from '@mui/icons-material/Add'
 
-const NewEnroll = ({ id }) => {
+const NewEnroll = ({ id, bachelor = '' }) => {
   const { mutate } = useSWRConfig()
   const { data: students, isLoading } = useSWR('/students')
   const [open, setOpen] = useState(false)
@@ -21,26 +21,24 @@ const NewEnroll = ({ id }) => {
   return (
     <>
       <Button variant='contained' onClick={toggleOpen} size='small' startIcon={<AddIcon />}>
-        Matricular
+        Registrar certificado
       </Button>
       <CustomDialog
         open={open}
         handleClose={toggleOpen}
-        title='Matricular estudiante'
+        title='Registrar certificado'
       >
         <Formik
           initialValues={{
             courseId: id,
             studentId: '',
             emittedAt: new Date(),
-            finishedAt: new Date(),
-            note: 0
+            bachelor
           }}
           validationSchema={Yup.object().shape({
             studentId: Yup.string().required('El estudiante es requerido'),
             emittedAt: Yup.date().required('La fecha de emisión es requerida'),
-            finishedAt: Yup.date().required('La fecha de finalización es requerida'),
-            note: Yup.number().min(0, 'no puede ser menor a 0').required('La nota es requerida')
+            bachelor: Yup.string().notRequired()
           })}
           onSubmit={async (values, { setSubmitting }) => {
             try {
@@ -48,8 +46,7 @@ const NewEnroll = ({ id }) => {
               const enroll = [{
                 courseId: values.courseId,
                 emittedAt: new Date(values.emittedAt),
-                finishedAt: new Date(values.finishedAt),
-                note: values.note
+                bachelor: values.bachelor
               }]
               await axiosInstance.post(`/students/${values.studentId}/enroll`, { enrolls: enroll })
               enqueueSnackbar('Registro exitoso', { variant: 'success' })
@@ -75,24 +72,22 @@ const NewEnroll = ({ id }) => {
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <TextField
-                    select
+                  <Autocomplete
                     fullWidth
-                    variant='outlined'
-                    label='Estudiante'
-                    name='studentId'
-                    value={values.studentId}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(touched.studentId && errors.studentId)}
-                    helperText={touched.studentId && errors.studentId}
-                  >
-                    {students?.map(student => (
-                      <MenuItem key={student.id} value={student.id}>
-                        {`${student.user.dni} - ${student.user.name} ${student.user.lastname}`}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                    options={students}
+                    value={values.studentId ? students.find(student => student.id === values.studentId) : null}
+                    getOptionLabel={option => `${option.partner} - ${option.name} ${option.lastname}`}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label='Estudiante'
+                        variant='outlined'
+                        error={Boolean(touched.id && errors.id)}
+                        helperText={touched.id && errors.id}
+                      />
+                    )}
+                    onChange={(e, value) => handleChange({ target: { name: 'studentId', value: value?.id } })}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -101,7 +96,6 @@ const NewEnroll = ({ id }) => {
                     label='Fecha de emisión'
                     name='emittedAt'
                     type='date'
-                    size='small'
                     value={values.emittedAt}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -109,34 +103,18 @@ const NewEnroll = ({ id }) => {
                     helperText={touched.emittedAt && errors.emittedAt}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    variant='outlined'
-                    label='Fecha de finalización'
-                    name='finishedAt'
-                    type='date'
-                    size='small'
-                    value={values.finishedAt}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(touched.finishedAt && errors.finishedAt)}
-                    helperText={touched.finishedAt && errors.finishedAt}
-                  />
-                </Grid>
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
                     variant='outlined'
-                    label='Nota'
-                    name='note'
+                    label='Título'
+                    name='bachelor'
                     type='number'
-                    size='small'
-                    value={values.note}
+                    value={values.bachelor}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(touched.note && errors.note)}
-                    helperText={touched.note && errors.note}
+                    error={Boolean(touched.bachelor && errors.bachelor)}
+                    helperText={touched.bachelor && errors.bachelor}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -147,7 +125,7 @@ const NewEnroll = ({ id }) => {
                     type='submit'
                     disabled={isSubmitting}
                   >
-                    matricular
+                    guardar
                   </Button>
                 </Grid>
               </Grid>

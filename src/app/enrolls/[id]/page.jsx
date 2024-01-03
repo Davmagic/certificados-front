@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import useSWR from 'swr'
 import { Card, CardContent, Divider, Grid, Typography } from '@mui/material'
@@ -17,7 +18,7 @@ const EnrollDetail = ({ params: { id } }) => {
 
   if (isLoading) return <LoadingData />
 
-  if (error) return <div>Error al cargar los datos del curso</div>
+  if (error) return <div>Error al cargar los datos del certificado</div>
 
   return (
     <Card>
@@ -27,7 +28,7 @@ const EnrollDetail = ({ params: { id } }) => {
             <PersonIcon fontSize='large' />
             <div>
               <Typography gutterBottom>
-                {enroll.student.user.name} {enroll.student.user.lastname}
+                {enroll.student.name} {enroll.student.lastname}
               </Typography>
               <Typography component='span' variant='caption'>
                 Nombres y Apellidos
@@ -39,7 +40,7 @@ const EnrollDetail = ({ params: { id } }) => {
             <RecentActorsIcon fontSize='large' />
             <div>
               <Typography gutterBottom>
-                {enroll.student.user.dni}
+                {enroll.student.dni}
               </Typography>
               <Typography component='span' variant='caption'>
                 Documento de indentidad
@@ -63,7 +64,7 @@ const EnrollDetail = ({ params: { id } }) => {
             <AccountBalanceIcon fontSize='large' />
             <div>
               <Typography gutterBottom>
-                CÁMARA ARTESANAL POPULAR DE CAPACITACIÓN ARTEC S.A.S. B.I.C.
+                {enroll.course.academy.name}
               </Typography>
               <Typography component='span' variant='caption'>
                 Organismo capacitador

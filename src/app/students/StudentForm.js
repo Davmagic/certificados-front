@@ -15,19 +15,19 @@ const StudentForm = ({ student, handleClose }) => {
     <Formik
       validateOnChange={false}
       initialValues={{
-        dni: student?.user?.dni || '',
-        email: student?.user?.email || '',
-        name: student?.user?.name || '',
-        lastname: student?.user?.lastname || ''
+        dni: student?.dni || '',
+        partner: student?.partner || '',
+        name: student?.name || '',
+        lastname: student?.lastname || ''
       }}
       validationSchema={Yup.object().shape({
         dni: Yup.string().max(255).required('C.I. es requerido')
           .test('uniquedni', 'Cédula ya existe', async (value) => {
             try {
-              if (student?.user?.dni === value) {
+              if (student?.dni === value) {
                 return true
               }
-              const response = await axiosInstance.get(`/users/search?dni=${value}`)
+              const response = await axiosInstance.get(`/students/search?dni=${value}`)
               const { data } = response
               if (data) {
                 return false
@@ -38,43 +38,25 @@ const StudentForm = ({ student, handleClose }) => {
               return false
             }
           }),
-        email: Yup.string().email('Debe ser un correo válido').max(255).required('Correo es requerido')
-          .test('unique', 'Correo ya existe', async (value) => {
-            try {
-              if (student?.user?.email === value) {
-                return true
-              }
-              const response = await axiosInstance.get(`/users/search?email=${value}`)
-              const { data } = response
-              if (data) {
-                return false
-              }
-              return true
-            } catch (error) {
-              console.error(error)
-              return false
-            }
-          }),
-        name: Yup.string().max(255).required('Nombre es requerido'),
-        lastname: Yup.string().max(255).required('Apellido es requerido')
+        partner: Yup.string().max(100).required('Código de socio es requerido'),
+        name: Yup.string().max(100).required('Nombre es requerido'),
+        lastname: Yup.string().max(100).required('Apellido es requerido')
       })}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         try {
           setSubmitting(true)
           if (student) {
-            await axiosInstance.put(`/users/${student.userId}`, values)
+            await axiosInstance.put(`/students/${student.id}`, values)
             enqueueSnackbar('Estudiante actualizado', { variant: 'success' })
           } else {
-            await axiosInstance.post('/students',
-              { ...values, password: values.dni }
-            )
+            await axiosInstance.post('/students', values)
             enqueueSnackbar('Estudiante creado', { variant: 'success' })
           }
           mutate('/students')
           handleClose?.()
         } catch (error) {
           console.error(error)
-          enqueueSnackbar('Error al crear, verifique que la cedula y correo sean únicos', { variant: 'error' })
+          enqueueSnackbar('Error al crear, verifique que la cedula no se repite', { variant: 'error' })
         } finally {
           setSubmitting(false)
         }
@@ -129,15 +111,14 @@ const StudentForm = ({ student, handleClose }) => {
           <TextField
             fullWidth
             margin='normal'
-            label='Correo'
-            name='email'
+            label='Código de socio'
+            name='partner'
             variant='outlined'
-            type='email'
-            value={values.email}
+            value={values.partner}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
+            error={Boolean(touched.partner && errors.partner)}
+            helperText={touched.partner && errors.partner}
           />
           <Button
             type='submit'

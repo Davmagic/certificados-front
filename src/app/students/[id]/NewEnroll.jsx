@@ -4,7 +4,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import * as Yup from 'yup'
 import { FieldArray, Formik } from 'formik'
 import { enqueueSnackbar } from 'notistack'
-import { Button, Grid, IconButton, MenuItem, TextField } from '@mui/material'
+import { Autocomplete, Button, Grid, IconButton, TextField } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import axiosInstance from '@/helpers/axiosInstance'
@@ -12,10 +12,9 @@ import CustomDialog from '@/components/CustomDialog'
 import LoadingData from '@/components/LoadingData'
 
 const baseEnroll = {
-  note: 0,
-  finishedAt: new Date(),
   emittedAt: new Date(),
-  courseId: ''
+  courseId: '',
+  bachelor: ''
 }
 
 const NewEnroll = ({ id }) => {
@@ -23,6 +22,8 @@ const NewEnroll = ({ id }) => {
   const { data: courses, isLoading } = useSWR('/courses')
   const [open, setOpen] = useState(false)
   const toggleDialog = () => setOpen((prev) => !prev)
+
+  console.log(courses)
 
   if (isLoading) return <LoadingData />
 
@@ -34,12 +35,12 @@ const NewEnroll = ({ id }) => {
         startIcon={<AddIcon />}
         onClick={toggleDialog}
       >
-        Nueva Matricula
+        Registrar certificado
       </Button>
       <CustomDialog
         open={open}
         handleClose={toggleDialog}
-        title='Nueva Matricula'
+        title='Registrar certificado'
       >
         <Formik
           initialValues={{
@@ -48,8 +49,6 @@ const NewEnroll = ({ id }) => {
           validationSchema={Yup.object().shape({
             enrolls: Yup.array().of(
               Yup.object().shape({
-                note: Yup.number().min(0, 'debe ser mayor que 0').required('La nota es requerida'),
-                finishedAt: Yup.date().required('La fecha de finalizacion es requerida'),
                 emittedAt: Yup.date().required('La fecha de emision es requerida'),
                 courseId: Yup.string().required('El curso es requerido')
               })
@@ -59,16 +58,15 @@ const NewEnroll = ({ id }) => {
             try {
               const parsedValues = values.enrolls.map((enroll) => ({
                 ...enroll,
-                finishedAt: new Date(enroll.finishedAt),
                 emittedAt: new Date(enroll.emittedAt)
               }))
               await axiosInstance.post(`/students/${id}/enroll`, { enrolls: parsedValues })
-              enqueueSnackbar('Matricula(s) creada(s) correctamente', { variant: 'success' })
+              enqueueSnackbar('Certificado registrado correctamente', { variant: 'success' })
               mutate(`/students/${id}/enrolls`)
               toggleDialog()
             } catch (error) {
               console.log(error)
-              enqueueSnackbar('Error al crear matricula', { variant: 'error' })
+              enqueueSnackbar('Error al registrar la información', { variant: 'error' })
             }
             setSubmitting(false)
           }}
@@ -77,10 +75,11 @@ const NewEnroll = ({ id }) => {
             values,
             errors,
             touched,
+            isSubmitting,
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting
+            setValues
           }) => (
             <form onSubmit={handleSubmit}>
               <FieldArray name='enrolls'>
@@ -93,41 +92,42 @@ const NewEnroll = ({ id }) => {
                       onClick={() => push(baseEnroll)}
                       sx={{ mb: 2, alignSelf: 'flex-end' }}
                     >
-                      Agregar Matricula
+                      añadir certificado
                     </Button>
                     {values.enrolls.map((enroll, index) => (
                       <Grid key={index} container spacing={2}>
                         <Grid item xs={12}>
-                          <TextField
+                          <Autocomplete
                             fullWidth
-                            label='Curso'
-                            name={`enrolls.${index}.courseId`}
-                            value={enroll.courseId}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            select
-                            error={Boolean(touched.enrolls?.[index]?.courseId && errors.enrolls?.[index]?.courseId)}
-                            helperText={touched.enrolls?.[index]?.courseId && errors.enrolls?.[index]?.courseId}
-                          >
-                            {courses?.map((course) => (
-                              <MenuItem key={course.id} value={course.id}>
-                                {course.name}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <TextField
-                            fullWidth
+                            disablePortal
+                            options={courses}
                             size='small'
-                            label='Fecha de finalizacion'
-                            name={`enrolls.${index}.finishedAt`}
-                            type='date'
-                            value={enroll.finishedAt}
-                            onChange={handleChange}
+                            value={enroll.courseId ? courses.find((course) => course.id === enroll.courseId) : null}
+                            getOptionLabel={(option) => `${option.name} - ${option.mode} - ${option.academy?.name}`}
+                            onChange={(event, newValue) => {
+                              setValues(prev => ({
+                                enrolls: prev.enrolls.map((enroll, i) => {
+                                  if (i === index) {
+                                    return {
+                                      ...enroll,
+                                      courseId: newValue.id || '',
+                                      bachelor: newValue.bachelor || ''
+                                    }
+                                  }
+                                  return enroll
+                                })
+                              }))
+                            }}
                             onBlur={handleBlur}
-                            error={Boolean(touched.enrolls?.[index]?.finishedAt && errors.enrolls?.[index]?.finishedAt)}
-                            helperText={touched.enrolls?.[index]?.finishedAt && errors.enrolls?.[index]?.finishedAt}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label='Curso'
+                                variant='outlined'
+                                error={Boolean(touched.enrolls?.[index]?.courseId && errors.enrolls?.[index]?.courseId)}
+                                helperText={touched.enrolls?.[index]?.courseId && errors.enrolls?.[index]?.courseId}
+                              />
+                            )}
                           />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -144,18 +144,17 @@ const NewEnroll = ({ id }) => {
                             helperText={touched.enrolls?.[index]?.emittedAt && errors.enrolls?.[index]?.emittedAt}
                           />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                           <TextField
                             fullWidth
                             size='small'
-                            label='Nota'
-                            type='number'
-                            name={`enrolls.${index}.note`}
-                            value={enroll.note}
+                            label='Titulo del certificado'
+                            name={`enrolls.${index}.bachelor`}
+                            value={enroll.bachelor}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            error={Boolean(touched.enrolls?.[index]?.note && errors.enrolls?.[index]?.note)}
-                            helperText={touched.enrolls?.[index]?.note && errors.enrolls?.[index]?.note}
+                            error={Boolean(touched.enrolls?.[index]?.bachelor && errors.enrolls?.[index]?.bachelor)}
+                            helperText={touched.enrolls?.[index]?.bachelor && errors.enrolls?.[index]?.bachelor}
                           />
                         </Grid>
                         <Grid item xs={6}>
@@ -173,7 +172,7 @@ const NewEnroll = ({ id }) => {
                 )}
               </FieldArray>
               <Button type='submit' fullWidth variant='contained' disabled={isSubmitting} sx={{ mt: 2 }}>
-                Registrar matricula(s)
+                Registrar certificado(s)
               </Button>
             </form>
           )}
