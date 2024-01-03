@@ -20,7 +20,7 @@ const imageLogo = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/c
 const imageFooter = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-footer.png'
 const providerEntity = 'CÁMARA ARTESANAL POPULAR DE CAPACITACIÓN'
 const providerEntityShort = 'ARTEC S.A.S. B.L.C.'
-export const QR_BASE = 'http://localhost:3000/enrolls' // 'https://certificados-front.vercel.app/enrolls'
+export const QR_BASE = 'https://certificados-front.vercel.app/enrolls'
 
 const largeSize = 15
 const mediumSize = 12
