@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 import { Tooltip, IconButton, CircularProgress } from '@mui/material'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'

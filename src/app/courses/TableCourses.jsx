@@ -18,21 +18,21 @@ const columns = [
     headerName: 'Nombre'
   },
   {
-    field: 'description',
-    headerName: 'Descripcion',
+    field: 'mode',
+    headerName: 'Modalidad',
     width: 150
-  },
-  {
-    field: 'endAt',
-    headerName: 'Fecha de finalizacion'
   },
   {
     field: 'hours',
     headerName: 'Horas'
   },
   {
+    field: 'academy',
+    headerName: 'Academia'
+  },
+  {
     field: 'students',
-    headerName: 'Estudiantes'
+    headerName: '# de Estudiantes'
   },
   {
     field: 'actions',

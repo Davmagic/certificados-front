@@ -23,8 +23,6 @@ const NewEnroll = ({ id }) => {
   const [open, setOpen] = useState(false)
   const toggleDialog = () => setOpen((prev) => !prev)
 
-  console.log(courses)
-
   if (isLoading) return <LoadingData />
 
   return (
