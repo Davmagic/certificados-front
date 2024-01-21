@@ -75,10 +75,10 @@ const EnrollDetail = ({ params: { id } }) => {
             <WorkIcon fontSize='large' />
             <div>
               <Typography gutterBottom>
-                {enroll.course.name}
+                {enroll.course.bachelor}
               </Typography>
               <Typography component='span' variant='caption'>
-                Nombre del curso
+                Título
               </Typography>
             </div>
             <Divider variant='middle' />
