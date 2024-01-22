@@ -144,7 +144,7 @@ const FormCourse = ({ data }) => {
             color='primary'
             disabled={isSubmitting}
           >
-            Crear
+            {data ? 'Actualizar' : 'Guardar'}
           </Button>
         </form>
       )}

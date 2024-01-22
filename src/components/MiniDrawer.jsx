@@ -20,6 +20,7 @@ import ListItemText from '@mui/material/ListItemText'
 import HomeIcon from '@mui/icons-material/Home'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import ClassIcon from '@mui/icons-material/Class'
+import SchoolIcon from '@mui/icons-material/School'
 import SearchIcon from '@mui/icons-material/Search'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SupportIcon from '@mui/icons-material/Support'
@@ -38,7 +39,8 @@ const LINKS = [
 ]
 const PRIVATE_LINKS = [
   { text: 'Estudiantes', href: '/students', icon: PeopleAltIcon },
-  { text: 'Cursos', href: '/courses', icon: ClassIcon }
+  { text: 'Cursos', href: '/courses', icon: ClassIcon },
+  { text: 'Academias', href: '/academies', icon: SchoolIcon }
 ]
 
 const PLACEHOLDER_LINKS = [

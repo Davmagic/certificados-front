@@ -1,7 +1,17 @@
+import { Box, Card, CardHeader } from '@mui/material'
+import NewAcademy from './NewAcademy'
+import TableAcademies from './TableAcademies'
+
 export default function DashboardPage () {
   return (
-    <div>
-      <h1>Dashboard Page</h1>
-    </div>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Card sx={{ mb: 2 }}>
+        <CardHeader
+          title='Academias'
+          action={<NewAcademy />}
+        />
+      </Card>
+      <TableAcademies />
+    </Box>
   )
 }

@@ -125,7 +125,7 @@ const NewEnroll = ({ id, bachelor = '' }) => {
                     type='submit'
                     disabled={isSubmitting}
                   >
-                    guardar
+                    Guardar
                   </Button>
                 </Grid>
               </Grid>

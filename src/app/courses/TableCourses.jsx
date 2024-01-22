@@ -54,8 +54,8 @@ const TableCourses = () => {
   const handleDelete = async () => {
     try {
       await axiosInstance.delete(`/courses/${selCourse.id}`)
-      toggleConfirm('/courses')
-      mutate()
+      toggleConfirm()
+      mutate('/courses')
       enqueueSnackbar('Curso eliminado', { variant: 'success' })
     } catch (error) {
       enqueueSnackbar('Error al eliminar el curso', { variant: 'error' })
@@ -75,7 +75,7 @@ const TableCourses = () => {
         actions={
           <>
             <Button onClick={() => toggleConfirm()}>Cancelar</Button>
-            <Button onClick={handleDelete}>Eliminar</Button>
+            <Button variant='contained' color='error' onClick={handleDelete}>Eliminar</Button>
           </>
         }
       >
