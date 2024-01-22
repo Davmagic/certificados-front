@@ -2,7 +2,7 @@
 import useSWR, { useSWRConfig } from 'swr'
 import { useState } from 'react'
 import { Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit'
+// import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import LoadingData from '@/components/LoadingData'
 import ExportEnrollButton from '@/components/ExportEnrollButton'
@@ -89,11 +89,11 @@ const TableEnrolls = ({ id, type = 'students' }) => {
                 <TableCell>
                   <QrCodeButton enroll={enroll} />
                   <ExportEnrollButton id={enroll.id} />
-                  <Tooltip title='Editar'>
+                  {/* <Tooltip title='Editar'>
                     <IconButton aria-label='editar' size='small' color='warning'>
                       <EditIcon fontSize='inherit' />
                     </IconButton>
-                  </Tooltip>
+                  </Tooltip> */}
                   <Tooltip title='Eliminar'>
                     <IconButton aria-label='eliminar' size='small' color='error' onClick={() => handleConfirm(enroll)}>
                       <DeleteIcon fontSize='inherit' />

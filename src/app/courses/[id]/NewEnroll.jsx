@@ -8,6 +8,7 @@ import CustomDialog from '@/components/CustomDialog'
 import axiosInstance from '@/helpers/axiosInstance'
 import { enqueueSnackbar } from 'notistack'
 import AddIcon from '@mui/icons-material/Add'
+import moment from 'moment'
 
 const NewEnroll = ({ id, bachelor = '' }) => {
   const { mutate } = useSWRConfig()
@@ -45,7 +46,7 @@ const NewEnroll = ({ id, bachelor = '' }) => {
               setSubmitting(true)
               const enroll = [{
                 courseId: values.courseId,
-                emittedAt: new Date(values.emittedAt),
+                emittedAt: moment(values.emittedAt).add(5, 'hours').toDate(),
                 bachelor: values.bachelor
               }]
               await axiosInstance.post(`/students/${values.studentId}/enroll`, { enrolls: enroll })
@@ -89,7 +90,7 @@ const NewEnroll = ({ id, bachelor = '' }) => {
                     onChange={(e, value) => handleChange({ target: { name: 'studentId', value: value?.id } })}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     variant='outlined'
@@ -109,7 +110,6 @@ const NewEnroll = ({ id, bachelor = '' }) => {
                     variant='outlined'
                     label='Título'
                     name='bachelor'
-                    type='number'
                     value={values.bachelor}
                     onChange={handleChange}
                     onBlur={handleBlur}

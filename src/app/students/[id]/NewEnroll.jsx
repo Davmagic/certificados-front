@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import axiosInstance from '@/helpers/axiosInstance'
 import CustomDialog from '@/components/CustomDialog'
 import LoadingData from '@/components/LoadingData'
+import moment from 'moment'
 
 const baseEnroll = {
   emittedAt: new Date(),
@@ -56,7 +57,7 @@ const NewEnroll = ({ id }) => {
             try {
               const parsedValues = values.enrolls.map((enroll) => ({
                 ...enroll,
-                emittedAt: new Date(enroll.emittedAt)
+                emittedAt: moment(enroll.emittedAt).add(5, 'hours').toDate()
               }))
               await axiosInstance.post(`/students/${id}/enroll`, { enrolls: parsedValues })
               enqueueSnackbar('Certificado registrado correctamente', { variant: 'success' })
