@@ -144,7 +144,7 @@ export default function MiniDrawer ({ children }) {
           </IconButton>
           <img src='/centro-logo.png' alt='logo' width='40' height='40' className='me-1' />
           <Typography variant='h6' noWrap component='h1'>
-            ARTEC
+            LATINCHEFS
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {session?.user

@@ -19,7 +19,7 @@ const imageTop = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/ce
 const imageLogo = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-logo.png'
 const imageFooter = 'https://dluxapp.s3.amazonaws.com/media/notifications_images/centro-footer.png'
 const providerEntity = 'CÁMARA ARTESANAL POPULAR DE CAPACITACIÓN'
-const providerEntityShort = 'ARTEC S.A.S. B.L.C.'
+const providerEntityShort = 'LATINCHEFS'
 export const QR_BASE = 'https://certificados-front.vercel.app/enrolls'
 
 const largeSize = 15
@@ -56,7 +56,7 @@ export default async function createPDF ({ student, course, ...enroll }) {
             new Line([0, 0], [150, 0]).lineWidth(1).color('black').end
           ]).end,
           new Txt('Arts. Evelin Rosero Proaño').bold().alignment('center').fontSize(smallSize).end,
-          new Txt('PRESIDENTE EJECUTIVO ARTEC').alignment('center').fontSize(smallSize - 2).end
+          new Txt('PRESIDENTE EJECUTIVO LATINCHEFS').alignment('center').fontSize(smallSize - 2).end
         ]).relativePosition(0, 30).end,
         new QR(`${QR_BASE}/${enroll.id}`).fit(75).relativePosition(0, 50).eccLevel('L').end,
         new Stack([
@@ -64,7 +64,7 @@ export default async function createPDF ({ student, course, ...enroll }) {
             new Line([0, 0], [150, 0]).lineWidth(1).color('black').end
           ]).end,
           new Txt('Arts. Mistón Valdéz Encalada').bold().alignment('center').fontSize(smallSize).end,
-          new Txt('VICEPRESIDENTE EJECUTIVO ARTEC').alignment('center').fontSize(smallSize - 2).end
+          new Txt('VICEPRESIDENTE EJECUTIVO LATINCHEFS').alignment('center').fontSize(smallSize - 2).end
         ]).relativePosition(0, 30).end
       ]).alignment('center').margin(20).end
     ]).width('100%').alignment('center').end
